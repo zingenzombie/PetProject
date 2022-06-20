@@ -84,6 +84,12 @@ build CMakeFiles/PetProject.dir/Pet.cpp.o: CXX_COMPILER__PetProject_Debug /Users
   OBJECT_DIR = CMakeFiles/PetProject.dir
   OBJECT_FILE_DIR = CMakeFiles/PetProject.dir
 
+build CMakeFiles/PetProject.dir/Functions.cpp.o: CXX_COMPILER__PetProject_Debug /Users/zingen/Documents/Programming$ Projects/PetProject/Functions.cpp || cmake_object_order_depends_target_PetProject
+  DEP_FILE = CMakeFiles/PetProject.dir/Functions.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++14
+  OBJECT_DIR = CMakeFiles/PetProject.dir
+  OBJECT_FILE_DIR = CMakeFiles/PetProject.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target PetProject
@@ -92,7 +98,7 @@ build CMakeFiles/PetProject.dir/Pet.cpp.o: CXX_COMPILER__PetProject_Debug /Users
 #############################################
 # Link the executable PetProject
 
-build PetProject: CXX_EXECUTABLE_LINKER__PetProject_Debug CMakeFiles/PetProject.dir/main.cpp.o CMakeFiles/PetProject.dir/Pet.cpp.o
+build PetProject: CXX_EXECUTABLE_LINKER__PetProject_Debug CMakeFiles/PetProject.dir/main.cpp.o CMakeFiles/PetProject.dir/Pet.cpp.o CMakeFiles/PetProject.dir/Functions.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk
   OBJECT_DIR = CMakeFiles/PetProject.dir
   POST_BUILD = :

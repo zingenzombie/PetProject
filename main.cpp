@@ -3,6 +3,7 @@
 #include <string>
 #include "LinkedList.h"
 #include "Pet.h"
+#include "Functions.h"
 
 using namespace std;
 
@@ -15,10 +16,12 @@ int main() {
     ifstream pets("pets.csv");
 
     if(!pets.is_open()){
-        cout << "No pets detected; please enter a new pet." << endl;
         ofstream pets("pets.csv");
         pets << 0 << ",," << endl;
         pets << "PetName,Health,Happiness" << endl;
+        cout << "No pets detected; please enter a new pet name." << endl;
+        string name;
+        cin >> name;
     }
     else{
         string numPets;
