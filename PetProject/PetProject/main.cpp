@@ -20,6 +20,7 @@ int main(int argc, char const** argv)
     
     vector<sf::Sprite*> characters;
     
+    
     filesystem::path companions{companions};
     
     for (auto const& dir_entry : std::filesystem::directory_iterator{companions}){
