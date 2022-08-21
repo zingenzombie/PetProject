@@ -1,4 +1,4 @@
-Name: Zin
-Age: 0
-Hunger: 0
-Happiness: 0
+Zin
+100
+0
+0

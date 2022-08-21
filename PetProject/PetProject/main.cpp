@@ -2,14 +2,21 @@
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 #include <iostream>
+#include "companion.hpp"
 
 using namespace std;
+
+
 
 int main(int argc, char const** argv)
 {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(500, 800), "Pet Project");
+    sf::RenderWindow window(sf::VideoMode(500, 800), "Pet Project", sf::Style::Close);
 
+    window.setVerticalSyncEnabled(true);
+    
+    Companions *companions = new Companions("Companions/list.txt");
+    
     // Set the Icon
     sf::Image icon;
     if (!icon.loadFromFile("Assets/logo.png")) {
@@ -17,15 +24,6 @@ int main(int argc, char const** argv)
     }
     
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-    
-    vector<sf::Sprite*> characters;
-    
-    
-    filesystem::path companions{companions};
-    
-    for (auto const& dir_entry : std::filesystem::directory_iterator{companions}){
-        cout << "A" << endl;
-    }
 
     // Start the game loop
     while (window.isOpen())
@@ -47,6 +45,13 @@ int main(int argc, char const** argv)
 
         // Clear screen
         window.clear();
+        
+        sf::Texture texture;
+        texture.loadFromImage(*companions->activeCompanion->textures.find("test")->second);
+        sf::Sprite sprite;
+        sprite.setTexture(texture);
+        
+        window.draw(sprite);
 
         // Update the window
         window.display();

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		758804F828B20C710037FF18 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 758804F728B20C710037FF18 /* main.cpp */; };
+		7588050828B2BFCA0037FF18 /* companion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7588050628B2BFCA0037FF18 /* companion.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,8 @@
 		7588050328B20CDF0037FF18 /* PetProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PetProject.entitlements; sourceTree = "<group>"; };
 		7588050428B211780037FF18 /* Companions */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Companions; sourceTree = "<group>"; };
 		7588050528B211780037FF18 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
+		7588050628B2BFCA0037FF18 /* companion.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = companion.cpp; sourceTree = "<group>"; };
+		7588050728B2BFCA0037FF18 /* companion.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = companion.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +60,8 @@
 				7588050328B20CDF0037FF18 /* PetProject.entitlements */,
 				758804F728B20C710037FF18 /* main.cpp */,
 				758804F928B20C710037FF18 /* Resources */,
+				7588050628B2BFCA0037FF18 /* companion.cpp */,
+				7588050728B2BFCA0037FF18 /* companion.hpp */,
 			);
 			path = PetProject;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7588050828B2BFCA0037FF18 /* companion.cpp in Sources */,
 				758804F828B20C710037FF18 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
