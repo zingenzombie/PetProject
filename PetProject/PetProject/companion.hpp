@@ -22,9 +22,9 @@ class Companions{
 public:
     class Companion{
         void LoadTextures(){
-            sf::Image *test = new sf::Image();
-            test->loadFromFile("Companions/" + name + "/CharTextures/neutral.png");
-            textures.emplace("test", test);
+            sf::Image *neutral = new sf::Image();
+            neutral->loadFromFile("Companions/" + name + "/CharTextures/neutral.png");
+            textures.emplace("neutral", neutral);
         }
     public:
         Companion(string address){
