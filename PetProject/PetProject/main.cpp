@@ -38,10 +38,8 @@ map<string, sf::Sprite*> SpriteMaker(Companions *companions){
     sprites.emplace("buttonHighlight", buttonHighlight);
     
     //Companion sprite setup
-    sf::Texture *compTx = new sf::Texture();
-    compTx->loadFromImage(*companions->activeCompanion->textures.find("neutral")->second);
     sf::Sprite *comp = new sf::Sprite();
-    comp->setTexture(*compTx);
+    comp->setTexture(*companions->activeCompanion->textures.find("neutral")->second);
     sprites.emplace("comp", comp);
     
     return sprites;
@@ -126,11 +124,32 @@ int main(int argc, char const** argv)
         
         if(event.type == sf::Event::MouseButtonPressed){
             cout << mousePos.x << " " << mousePos.y << endl;
-            for(int i = 0; i < 6; i++)
-                if(buttonHover[i] == 1){
-                    buttonHover[i] = 2;
-                    break;
-                }
+            
+            if(buttonHover[0] == 1){
+                buttonHover[0] = 2;
+                sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("sad")->second);
+            }
+            
+            else if(buttonHover[1] == 1){
+                buttonHover[1] = 2;
+                sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("neutral")->second);
+            }
+            
+            else if(buttonHover[2] == 1){
+                buttonHover[2] = 2;
+            }
+            
+            else if(buttonHover[3] == 1){
+                buttonHover[3] = 2;
+            }
+            
+            else if(buttonHover[4] == 1){
+                buttonHover[4] = 2;
+            }
+            
+            else if(buttonHover[5] == 1){
+                buttonHover[5] = 2;
+            }
         }
         
         if(buttonHover[0] == 0){

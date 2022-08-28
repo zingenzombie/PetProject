@@ -24,7 +24,16 @@ public:
         void LoadTextures(){
             sf::Image *neutral = new sf::Image();
             neutral->loadFromFile("Companions/" + name + "/CharTextures/neutral.png");
-            textures.emplace("neutral", neutral);
+            sf::Texture *neutralTx = new sf::Texture();
+            neutralTx->loadFromImage(*neutral);
+            textures.emplace("neutral", neutralTx);
+            
+            
+            sf::Image *sad = new sf::Image();
+            sad->loadFromFile("Companions/" + name + "/CharTextures/sad.png");
+            sf::Texture *sadTx = new sf::Texture();
+            sadTx->loadFromImage(*sad);
+            textures.emplace("sad", sadTx);
         }
     public:
         Companion(string address){
@@ -39,7 +48,7 @@ public:
         }
         string name = "";
         unsigned int health = 0, age = 0, hunger = 0, happiness = 0;
-        map<string, sf::Image*> textures;
+        map<string, sf::Texture*> textures;
     };
     
     Companions(string address){
