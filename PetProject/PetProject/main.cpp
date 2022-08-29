@@ -122,8 +122,7 @@ int main(int argc, char const** argv)
             }
         }
         
-        if(event.type == sf::Event::MouseButtonPressed){
-            cout << mousePos.x << " " << mousePos.y << endl;
+        if(/*event.type == sf::Event::MouseButtonPressed*/ sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             
             if(buttonHover[0] == 1){
                 buttonHover[0] = 2;
@@ -151,6 +150,22 @@ int main(int argc, char const** argv)
                 buttonHover[5] = 2;
             }
         }
+        
+        sf::Font font;
+        font.loadFromFile("Assets/sans.ttf");
+        sf::Text text("sad", font);
+        text.setCharacterSize(50);
+        text.setStyle(sf::Text::Regular);
+        text.setFillColor(sf::Color::Red);
+        text.setPosition(0, 500);
+        window.draw(text);
+        
+        text.setString("Happy");
+        text.setCharacterSize(50);
+        text.setStyle(sf::Text::Regular);
+        text.setFillColor(sf::Color::Green);
+        text.setPosition(250, 500);
+        window.draw(text);
         
         if(buttonHover[0] == 0){
             sprites.find("button")->second->setPosition(0, 500);
@@ -231,7 +246,7 @@ int main(int argc, char const** argv)
         }
         
         window.draw(*sprites.find("comp")->second);
-
+        
         window.display();
     }
     
