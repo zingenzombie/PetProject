@@ -195,11 +195,25 @@ char buttonClick(sf::Vector2i &mousePos,char buttonState[]){
     }
 }
 
-void gameTimer(unsigned int &health, unsigned int &age, unsigned int &hunger, unsigned int &happiness){
+void gameTimer(unsigned int &health, unsigned long &age, unsigned int &hunger, unsigned int &happiness){
+    
+    mutex mtx;
+    
+    srand(time(NULL));
+    
     chrono::seconds interval(1);
-    while(true){
-        health--;
+    
+    while(health > 0){
+        mtx.lock();
+        age++;
         
+        if(hunger == 0)
+            health = 0;
+        else if(hunger != 100)
+            if(rand() % hunger == 0)
+                health--;
+        
+        mtx.unlock();
         
         this_thread::sleep_for(interval);
     }
@@ -252,10 +266,12 @@ int main(int argc, char const** argv){
             
             if (event.type == sf::Event::Closed){
                 window.close();
+                game.detach();
             }
 
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape){
                 window.close();
+                game.detach();
             }
             
             if(event.type == sf::Event::MouseButtonReleased){
@@ -309,11 +325,25 @@ int main(int argc, char const** argv){
         text.setPosition(250, 500);
         window.draw(text);
         
-        text.setString(to_string(companions->activeCompanion->health));
-        text.setCharacterSize(50);
+        text.setString(companions->activeCompanion->name);
+        text.setCharacterSize(20);
         text.setStyle(sf::Text::Regular);
         text.setFillColor(sf::Color::Black);
         text.setPosition(0, 0);
+        window.draw(text);
+        
+        text.setString("Age: " + to_string(companions->activeCompanion->age / 3600) + "h" + to_string((companions->activeCompanion->age / 60) % 60) + "m" + to_string(companions->activeCompanion->age % 60) + "s");
+        text.setCharacterSize(20);
+        text.setStyle(sf::Text::Regular);
+        text.setFillColor(sf::Color::Black);
+        text.setPosition(0, 20);
+        window.draw(text);
+        
+        text.setString("Health: " + to_string(companions->activeCompanion->health));
+        text.setCharacterSize(20);
+        text.setStyle(sf::Text::Regular);
+        text.setFillColor(sf::Color::Black);
+        text.setPosition(0, 40);
         window.draw(text);
         
         

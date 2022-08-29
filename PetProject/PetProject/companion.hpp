@@ -47,7 +47,8 @@ public:
             LoadTextures();
         }
         string name = "";
-        unsigned int health = 0, age = 0, hunger = 0, happiness = 0;
+        unsigned int health = 0, hunger = 0, happiness = 0;
+        unsigned long age = 0;
         map<string, sf::Texture*> textures;
     };
     
