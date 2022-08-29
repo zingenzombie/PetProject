@@ -28,16 +28,16 @@ public:
             neutralTx->loadFromImage(*neutral);
             textures.emplace("neutral", neutralTx);
             
-            
             sf::Image *sad = new sf::Image();
             sad->loadFromFile("Companions/" + name + "/CharTextures/sad.png");
             sf::Texture *sadTx = new sf::Texture();
             sadTx->loadFromImage(*sad);
             textures.emplace("sad", sadTx);
         }
+        
     public:
         Companion(string address){
-            ifstream file(address);
+            ifstream file("Companions/" + address + "/CharConfig.txt");
             file >> name;
             file >> health;
             file >> age;
@@ -52,7 +52,10 @@ public:
     };
     
     Companions(string address){
-        companions.push_back(new Companion(address));
+        ifstream file(address);
+        string tmp;
+        file >> tmp;
+        companions.push_back(new Companion(tmp));
         activeCompanion = companions.at(0);
     }
     
