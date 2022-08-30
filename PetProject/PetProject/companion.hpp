@@ -46,6 +46,16 @@ public:
             
             LoadTextures();
         }
+        
+        void SaveCompanion(string address){
+            ofstream file("Companions/" + address + "/CharConfig.txt");
+            file << name << endl;
+            file << health << endl;
+            file << age << endl;
+            file << hunger << endl;
+            file << happiness << endl;
+        }
+        
         string name = "";
         unsigned int health = 0, hunger = 0, happiness = 0;
         unsigned long age = 0;
