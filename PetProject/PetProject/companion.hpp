@@ -33,6 +33,12 @@ public:
             sf::Texture *sadTx = new sf::Texture();
             sadTx->loadFromImage(*sad);
             textures.emplace("sad", sadTx);
+            
+            sf::Image *dead = new sf::Image();
+            dead->loadFromFile("Companions/" + name + "/CharTextures/dead.png");
+            sf::Texture *deadTx = new sf::Texture();
+            deadTx->loadFromImage(*dead);
+            textures.emplace("dead", deadTx);
         }
         
     public:
@@ -72,7 +78,7 @@ public:
     
     vector<Companion*> companions;
     
-    Companion* activeCompanion;
+    Companion *activeCompanion;
 };
 
 #endif /* companion_hpp */

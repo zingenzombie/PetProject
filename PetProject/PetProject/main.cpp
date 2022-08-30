@@ -207,7 +207,7 @@ void drawText(sf::RenderWindow &window, Companions *companions){
     text.setPosition(10, 510);
     window.draw(text);
     
-    text.setString("Play");
+    text.setString("Support");
     text.setCharacterSize(50);
     text.setStyle(sf::Text::Regular);
     text.setFillColor(sf::Color::Green);
@@ -261,37 +261,69 @@ void companionRNG(Companions *companions){
     
     srand(time(NULL));
     
-    mtx.lock();
+    chrono::seconds interval(1);
     
-    companions->activeCompanion->age++;
+    while(true){
+        mtx.lock();
+        
+        if(companions->activeCompanion->hunger == 0)
+            companions->activeCompanion->health = 0;
+        else if(companions->activeCompanion->hunger < 75)
+            if(rand() % (companions->activeCompanion->hunger * 2) == 0)
+                companions->activeCompanion->health--;
+        
+        if(companions->activeCompanion->happiness == 0)
+            companions->activeCompanion->health = 0;
+        else if(companions->activeCompanion->happiness < 75)
+            if(rand() % (companions->activeCompanion->happiness * 2) == 0)
+                companions->activeCompanion->health--;
+        
+        if(companions->activeCompanion->happiness >= 90 && companions->activeCompanion->hunger >= 90)
+            if(rand() % 100 == 0)
+                companions->activeCompanion->health++;
+                
+        
+        if(rand() % 100 == 0)
+            companions->activeCompanion->hunger--;
+        
+        if(rand() % 100 == 0)
+            companions->activeCompanion->happiness--;
+        
+        mtx.unlock();
+        this_thread::sleep_for(interval);
+    }
+}
+
+void companionMaipulation(Companions::Companion *activeCompanion, map<string, sf::Sprite*> &sprites){
     
-    if(companions->activeCompanion->hunger == 0)
-        companions->activeCompanion->health = 0;
-    else if(companions->activeCompanion->hunger != 100)
-        if(rand() % companions->activeCompanion->hunger == 0)
-            companions->activeCompanion->health--;
+    bool upDown = false;
     
-    if(companions->activeCompanion->happiness == 0)
-        companions->activeCompanion->health = 0;
-    else if(companions->activeCompanion->happiness != 100)
-        if(rand() % companions->activeCompanion->happiness == 0)
-            companions->activeCompanion->health--;
-    
-    if(rand() % 100 == 0)
-        companions->activeCompanion->hunger--;
-    
-    if(rand() % 100 == 0)
-        companions->activeCompanion->happiness--;
-    
-    mtx.unlock();
+    while(true){
+        
+        mtx.lock();
+        
+        chrono::milliseconds interval(10 * (125 - activeCompanion->happiness));
+        
+        if(upDown)
+            sprites.find("comp")->second->move(0, 10);
+        else
+            sprites.find("comp")->second->move(0, -10);
+        upDown = !upDown;
+        mtx.unlock();
+        
+        this_thread::sleep_for(interval);
+    }
 }
 
 void gameTimer(Companions *companions){
     
     chrono::seconds interval(1);
     
+    thread game(companionRNG, companions);
+    
     while(companions->activeCompanion->health > 0){
-        companionRNG(companions);
+        
+        companions->activeCompanion->age++;
         
         this_thread::sleep_for(interval);
     }
@@ -322,6 +354,8 @@ int main(int argc, char const** argv){
     
     thread game(gameTimer, companions);
     
+    thread compManip(companionMaipulation, companions->activeCompanion, ref(sprites));
+    
     // Start the game loop
     while (window.isOpen())
     {
@@ -343,8 +377,9 @@ int main(int argc, char const** argv){
         while (window.pollEvent(event)){
             
             if (event.type == sf::Event::Closed){
-                window.close();
                 game.detach();
+                compManip.detach();
+                window.close();
                 companions->activeCompanion->SaveCompanion(companions->activeCompanion->name);
             }
             
@@ -374,6 +409,8 @@ int main(int argc, char const** argv){
                 companions->activeCompanion->happiness += 20;
                 if(companions->activeCompanion->happiness > 100)
                     companions->activeCompanion->happiness = 100;
+                if(companions->activeCompanion->happiness >= 50)
+                    sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("neutral")->second);
                 buttonPressed = -1;
                 mtx.unlock();
                 break;
@@ -399,9 +436,9 @@ int main(int argc, char const** argv){
         }
         
         mtx.lock();
-        if(companions->activeCompanion->happiness == 0)
-            sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("sad")->second);
-        else if(companions->activeCompanion->health == 0)
+        if(companions->activeCompanion->health == 0)
+            sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("dead")->second);
+        else if(companions->activeCompanion->happiness < 50)
             sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("sad")->second);
             
         window.draw(*sprites.find("comp")->second);
