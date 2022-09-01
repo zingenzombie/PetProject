@@ -278,7 +278,7 @@ void companionRNG(Companions *companions){
             if(rand() % (companions->activeCompanion->happiness * 2) == 0)
                 companions->activeCompanion->health--;
         
-        if(companions->activeCompanion->happiness >= 90 && companions->activeCompanion->hunger >= 90)
+        if(companions->activeCompanion->health < 100 && companions->activeCompanion->happiness >= 90 && companions->activeCompanion->hunger >= 90)
             if(rand() % 100 == 0)
                 companions->activeCompanion->health++;
                 
@@ -298,7 +298,7 @@ void companionMaipulation(Companions::Companion *activeCompanion, map<string, sf
     
     bool upDown = false;
     
-    while(true){
+    while(activeCompanion->health > 0){
         
         mtx.lock();
         
@@ -327,6 +327,7 @@ void gameTimer(Companions *companions){
         
         this_thread::sleep_for(interval);
     }
+    game.detach();
 }
 
 int main(int argc, char const** argv){
@@ -380,7 +381,7 @@ int main(int argc, char const** argv){
                 game.detach();
                 compManip.detach();
                 window.close();
-                companions->activeCompanion->SaveCompanion(companions->activeCompanion->name);
+                companions->SaveCompanions();
             }
             
             if(event.type == sf::Event::MouseButtonReleased){
@@ -395,49 +396,52 @@ int main(int argc, char const** argv){
             }
         }
         
-        switch(buttonPressed){
-            case 0:
-                mtx.lock();
-                companions->activeCompanion->hunger += 20;
-                if(companions->activeCompanion->hunger > 100)
-                    companions->activeCompanion->hunger = 100;
-                buttonPressed = -1;
-                mtx.unlock();
-                break;
-            case 1:
-                mtx.lock();
-                companions->activeCompanion->happiness += 20;
-                if(companions->activeCompanion->happiness > 100)
-                    companions->activeCompanion->happiness = 100;
-                if(companions->activeCompanion->happiness >= 50)
+        if(companions->activeCompanion->health > 0)
+            switch(buttonPressed){
+                case 0:
+                    mtx.lock();
+                    companions->activeCompanion->hunger += 20;
+                    if(companions->activeCompanion->hunger > 100)
+                        companions->activeCompanion->hunger = 100;
+                    buttonPressed = -1;
+                    mtx.unlock();
+                    break;
+                case 1:
+                    mtx.lock();
+                    companions->activeCompanion->happiness += 20;
+                    if(companions->activeCompanion->happiness > 100)
+                        companions->activeCompanion->happiness = 100;
                     sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("neutral")->second);
-                buttonPressed = -1;
-                mtx.unlock();
-                break;
-            case 2:
-                mtx.lock();
-                companions->activeCompanion->health += 20;
-                if(companions->activeCompanion->health > 100)
-                    companions->activeCompanion->health = 100;
-                buttonPressed = -1;
-                mtx.unlock();
-                break;
-            case 3:
-                buttonPressed = -1;
-                break;
-            case 4:
-                buttonPressed = -1;
-                break;
-            case 5:
-                buttonPressed = -1;
-                break;
-            default:
-                break;
-        }
+                    buttonPressed = -1;
+                    mtx.unlock();
+                    break;
+                case 2:
+                    mtx.lock();
+                    companions->activeCompanion->health += 20;
+                    if(companions->activeCompanion->health > 100)
+                        companions->activeCompanion->health = 100;
+                    sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("neutral")->second);
+                    buttonPressed = -1;
+                    mtx.unlock();
+                    break;
+                case 3:
+                    buttonPressed = -1;
+                    break;
+                case 4:
+                    buttonPressed = -1;
+                    break;
+                case 5:
+                    buttonPressed = -1;
+                    break;
+                default:
+                    break;
+            }
         
         mtx.lock();
         if(companions->activeCompanion->health == 0)
             sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("dead")->second);
+        else if(companions->activeCompanion->health < 50)
+            sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("sick")->second);
         else if(companions->activeCompanion->happiness < 50)
             sprites.find("comp")->second->setTexture(*companions->activeCompanion->textures.find("sad")->second);
             

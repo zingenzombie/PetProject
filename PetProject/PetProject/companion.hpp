@@ -39,6 +39,12 @@ public:
             sf::Texture *deadTx = new sf::Texture();
             deadTx->loadFromImage(*dead);
             textures.emplace("dead", deadTx);
+            
+            sf::Image *sick = new sf::Image();
+            sick->loadFromFile("Companions/" + name + "/CharTextures/sick.png");
+            sf::Texture *sickTx = new sf::Texture();
+            sickTx->loadFromImage(*sick);
+            textures.emplace("sick", sickTx);
         }
         
     public:
@@ -65,6 +71,7 @@ public:
         string name = "";
         unsigned int health = 0, hunger = 0, happiness = 0;
         unsigned long age = 0;
+        bool active = false;
         map<string, sf::Texture*> textures;
     };
     
@@ -74,6 +81,13 @@ public:
         file >> tmp;
         companions.push_back(new Companion(tmp));
         activeCompanion = companions.at(0);
+        activeCompanion->active = true;
+    }
+    
+    void SaveCompanions(){
+        for(int i = 0; i < companions.size(); i++){
+            companions.at(i)->SaveCompanion(companions.at(i)->name);
+        }
     }
     
     vector<Companion*> companions;
