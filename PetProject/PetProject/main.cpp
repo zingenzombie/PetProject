@@ -2,8 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 #include <iostream>
-#include "companion.hpp"
 #include <thread>
+#include "companion.hpp"
+#include "animations.hpp"
 #include <mutex>
 
 using namespace std;
@@ -330,19 +331,23 @@ void gameTimer(Companions *companions){
     game.detach();
 }
 
+char eventProcessor(sf::Event *event){
+    
+}
+
 int main(int argc, char const** argv){
+    
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(500, 800), "Pet Project", sf::Style::Close);
 
     window.setVerticalSyncEnabled(true);
     
+    //Initialize the companions
     Companions *companions = new Companions("Companions/list.txt");
     
-    // Set the Icon
     sf::Image icon;
     if (!icon.loadFromFile("Assets/logo.png"))
         return EXIT_FAILURE;
-    
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
     map<string, sf::Sprite*> sprites = SpriteMaker(companions);
@@ -447,11 +452,10 @@ int main(int argc, char const** argv){
             
         window.draw(*sprites.find("comp")->second);
         mtx.unlock();
-         
+        
         drawText(window, companions);
         
         drawButtons(sprites, buttonState, window);
-        
         
         window.display();
     }
