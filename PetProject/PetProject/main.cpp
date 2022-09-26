@@ -331,10 +331,6 @@ void gameTimer(Companions *companions){
     game.detach();
 }
 
-char eventProcessor(sf::Event *event){
-    
-}
-
 int main(int argc, char const** argv){
     
     // Create the main window

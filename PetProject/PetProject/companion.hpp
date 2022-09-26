@@ -15,6 +15,7 @@
 #include <vector>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "animations.hpp"
 
 using namespace std;
 
@@ -46,6 +47,9 @@ public:
             sickTx->loadFromImage(*sick);
             textures.emplace("sick", sickTx);
         }
+        void LoadAnimations(){
+            
+        }
         
     public:
         Companion(string address){
@@ -57,6 +61,7 @@ public:
             file >> happiness;
             
             LoadTextures();
+            LoadAnimations();
         }
         
         void SaveCompanion(string address){
@@ -73,6 +78,7 @@ public:
         unsigned long age = 0;
         bool active = false;
         map<string, sf::Texture*> textures;
+        map<string, Animation*> animations;
     };
     
     Companions(string address){
